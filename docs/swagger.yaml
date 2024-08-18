@@ -1,0 +1,252 @@
+basePath: /
+definitions:
+  models.LoginReq:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      password:
+        example: password123
+        type: string
+    type: object
+  models.PhotoReq:
+    properties:
+      caption:
+        example: A photo of a beautiful sunset
+        type: string
+      photo_url:
+        example: https://example.com/photo.jpg
+        type: string
+      title:
+        example: Beautiful Sunset
+        type: string
+      user_id:
+        description: 'Optional: Direct relation to User'
+        example: 1
+        type: integer
+    type: object
+  models.RegisterReq:
+    properties:
+      photo:
+        $ref: '#/definitions/models.PhotoReq'
+      user:
+        $ref: '#/definitions/models.UserReq'
+    type: object
+  models.User:
+    properties:
+      address:
+        type: string
+      age:
+        type: integer
+      created_at:
+        type: string
+      email:
+        type: string
+      fullname:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      status_user:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  models.UserReq:
+    properties:
+      address:
+        example: 123 Main St
+        type: string
+      age:
+        example: 25
+        type: integer
+      email:
+        example: user@example.com
+        type: string
+      fullname:
+        example: John Doe
+        type: string
+      password:
+        example: password123
+        type: string
+      statusUser:
+        example: free
+        type: string
+      username:
+        example: johndoe
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: soberkoder@swagger.io
+    name: API Support
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Dating Apps Documentation API
+  version: "2.0"
+paths:
+  /swipe/{profileID}/{otherProfileID}:
+    post:
+      consumes:
+      - application/json
+      description: Perform a swipe action on another profile and check for a match
+      parameters:
+      - description: ID of the profile that is performing the swipe
+        in: path
+        name: profileID
+        required: true
+        type: integer
+      - description: ID of the profile being swiped
+        in: path
+        name: otherProfileID
+        required: true
+        type: integer
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Swipe a profile
+      tags:
+      - Profiles
+  /users/{id}:
+    delete:
+      description: Delete a user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a user
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Update user information by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update user information
+      tags:
+      - Users
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Log in a user and return a JWT token
+      parameters:
+      - description: Login Data
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Log in a user
+      tags:
+      - Users
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user and create an associated photo and profile
+      parameters:
+      - description: User and Photo Data
+        in: body
+        name: registerReq
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register a new user
+      tags:
+      - Users
+swagger: "2.0"
