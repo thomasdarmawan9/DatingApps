@@ -1,7 +1,3 @@
-Berikut adalah contoh deskripsi untuk GitHub repository yang mengimplementasikan backend REST API untuk aplikasi kencan (dating app) menggunakan Golang:
-
----
-
 # Dating App Backend REST API with Golang
 
 Welcome to the repository for a **Dating App Backend REST API** built using **Golang**. This project serves as the backend service for a dating application, providing all the necessary API endpoints for user management, profile creation, photo uploads, matching, and more.
